@@ -23,7 +23,19 @@ module.exports = {
       },
       {
         test: /\.(css|less)$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader'] // 从右到左执行，先用less-loader转换成css,再用css-loader把css打包到commonjs里，在通过style-loader将css写到style标签里
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'less-loader',
+          {
+            loader: 'postcss-loader', // autoprefix 配合postcss-loader使用
+            options: {
+              plugins: () => [
+                require('autoprefixer')
+              ]
+            }
+          }
+        ] // 从右到左执行，先用less-loader转换成css,再用css-loader把css打包到commonjs里，在通过style-loader将css写到style标签里
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/,
