@@ -2,9 +2,9 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const path = require('path')
-
+const webpack = require('webpack')
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
     index: './src/index.js',
     search: './src/search.js'
@@ -48,11 +48,17 @@ module.exports = {
       }
     ]
   },
+  devServer: {
+    contentBase: './dist',
+    hot: true,
+    open: true
+  },
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: './src/index.html'
     }),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin() // 每次重新打包时都会清空构建目录（dist）
+    // new webpack.HotModuleReplacementPlugin() // 热更新配合HotModuleReplacementPlugin一起使用, hot: true,会自动引入
   ]
 }
