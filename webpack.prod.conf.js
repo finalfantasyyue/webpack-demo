@@ -13,7 +13,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: '[name]_[chunkhash:8].js' // 编译时，只有改变的文件会重新打包，JS 没有 contenthash，只能从chunkhash和hadh里面选。但是hash对于js的含义是整个构建的文件指纹，每次构建有任何文件变了这个值都会变。所以js只能用chunkhash
+    filename: '[name]_[chunkhash:8].js' // 编译时，只有改变的文件打包完成后文件hash会变，JS 没有 contenthash，只能从chunkhash和hash里面选。但是hash对于js的含义是整个构建的文件指纹，每次构建有任何文件变了这个值都会变。所以js只能用chunkhash
   },
   module: {
     rules: [
@@ -26,6 +26,13 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
+          {
+            loader: 'px2rem-loader',
+            options: {
+              remUni: 75, // 1rem为75px对应750设计稿
+              remPrecision: 8 // 精确度为8位小数
+            }
+          },
           'less-loader',
           {
             loader: 'postcss-loader', // autoprefix 配合postcss-loader使用

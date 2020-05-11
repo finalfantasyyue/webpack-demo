@@ -3,9 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>webpack</title>
+  <%=require('raw-loader!./meta.html')%>
+  <script type="text/javascript">
+    <%= require('raw-loader!babel-loader!../node_modules/lib-flexible/flexible.js') %>
+  </script>
 </head>
 <body>
 <!--这是一段注释index页面-->
-  <div id="app"></div>
+  <div id="app">
+  </div>
 </body>
 </html>
