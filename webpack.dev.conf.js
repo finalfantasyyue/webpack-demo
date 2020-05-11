@@ -56,7 +56,21 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: './src/index.html'
+      // template: './src/index.html',
+      template: path.resolve(__dirname, './src/index.html'),
+      chunks: ['index'], // 将index.css,index.js打包到index.html里
+      inject: true,
+      minify: { // 压缩内嵌到html里面的js,css
+        collapseWhitespace: true,
+        minifyCSS: true,
+        minifyJS: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'search.html',
+      template: path.resolve(__dirname, './src/search.html'),
+      chunks: ['search'], // 将search.js，search.css打包到search.html里
+      inject: true
     }),
     new CleanWebpackPlugin() // 每次重新打包时都会清空构建目录（dist）
     // new webpack.HotModuleReplacementPlugin() // 热更新配合HotModuleReplacementPlugin一起使用, hot: true,会自动引入

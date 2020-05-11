@@ -5,7 +5,7 @@ import ReactDom from 'react-dom'
 import browser from './assets/images/brower.jpg'
 import './index.less'
 
-class Search extends React.Component {
+class Index extends React.Component {
   render() {
     return <div class="search-text">
       Search Text
@@ -15,6 +15,6 @@ class Search extends React.Component {
 }
 
 ReactDom.render(
-  <Search />,
+  <Index />,
   document.getElementById('app')
 )
