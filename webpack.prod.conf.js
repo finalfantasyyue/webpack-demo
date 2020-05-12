@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') // 从js里抽离出css，css单独是个文件
 const OptimizeCssAssetsWebpackPlugin  = require('optimize-css-assets-webpack-plugin') // css压缩
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin') // 提取公共资源，减少打包体积，但需要在入口index.html手动引入
 const path = require('path')
 const glob = require('glob')
 const webpack = require('webpack')
@@ -21,7 +22,7 @@ const setMPA = () => {
           filename: `${pageName}.html`,
           // template: './src/index.html',
           template: path.resolve(__dirname, `./src/${pageName}/index.html`),
-          chunks: [pageName], // 将index.css,index.js打包到index.html里
+          chunks: ['common', 'vendors', pageName], // 将index.css,index.js打包到index.html里
           inject: true,
           minify: { // 压缩内嵌到html里面的js,css
             collapseWhitespace: true,
@@ -133,6 +134,38 @@ module.exports = {
     new OptimizeCssAssetsWebpackPlugin({
       assetNameRegExp: /\.css$/g,
       cssProcessor: require('cssnano')
-    })
-  ].concat(htmlWebpackPlugin)
+    }),
+    // new HtmlWebpackExternalsPlugin({
+    //   externals: [
+    //     {
+    //       module: 'react',
+    //       // entry: 'https://cdnjs.cloudflare.com/ajax/libs/react/16.13.1/umd/react.production.min.js'
+    //       entry: 'https://11.url.cn/now/lib/16.2.0/react.min.js'
+    //     },
+    //     {
+    //       module: 'react-dom',
+    //       // entry: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.13.1/umd/react-dom.production.min.js'
+    //       entry: 'https://11.url.cn/now/lib/16.2.0/react-dom.min.js'
+    //     }
+    //   ]
+    // })
+  ].concat(htmlWebpackPlugin),
+  optimization: {
+    splitChunks: {
+      minSize: 0, // 当文件大于30k时单独打包成common.js
+      cacheGroups: {
+        commons: {
+          name: "common",
+          chunks: "all",
+          minChunks: 2, // 引用两次及以上会打包成common.js文件
+        },
+        vendors: {
+          test: /(react|react-dom)/, // 建议仅包括您的核心框架和实用程序
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
+    }
+  },
+  devtool: 'cheap-module-source-map'
 }
