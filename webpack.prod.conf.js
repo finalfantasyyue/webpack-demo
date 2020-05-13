@@ -39,7 +39,7 @@ const setMPA = () => {
 }
 const { entry, htmlWebpackPlugin } = setMPA()
 module.exports = {
-  mode: 'production',
+  mode: 'production', // 默认会忽略没有用到的代码，即引入了但是没用（tree shaking）
   entry: entry,
   // entry: {
   //   index: './src/index.js',
