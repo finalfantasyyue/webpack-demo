@@ -1,6 +1,7 @@
 'use strict'
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin') // 优化构建命令时的显示日志
 const path = require('path')
 const webpack = require('webpack')
 const glob = require('glob')
@@ -84,7 +85,8 @@ module.exports = {
   devServer: {
     contentBase: './dist',
     hot: true,
-    open: true
+    open: true,
+    stats: 'errors-only'
   },
   plugins: [
     // new HtmlWebpackPlugin({
@@ -105,8 +107,9 @@ module.exports = {
     //   chunks: ['search'], // 将search.js，search.css打包到search.html里
     //   inject: true
     // }),
+    new FriendlyErrorsWebpackPlugin(),
     new CleanWebpackPlugin() // 每次重新打包时都会清空构建目录（dist）
     // new webpack.HotModuleReplacementPlugin() // 热更新配合HotModuleReplacementPlugin一起使用, hot: true,会自动引入
   ].concat(htmlWebpackPlugin),
-  devtool: 'cheap-module-eval-source-map'
+  devtool: '#cheap-module-eval-source-map'
 }

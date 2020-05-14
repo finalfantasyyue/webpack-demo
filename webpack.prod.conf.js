@@ -4,6 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') // 从js里抽离出css，css单独是个文件
 const OptimizeCssAssetsWebpackPlugin  = require('optimize-css-assets-webpack-plugin') // css压缩
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin') // 提取公共资源，减少打包体积，但需要在入口index.html手动引入
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin') // 优化构建命令时的显示日志
 const path = require('path')
 const glob = require('glob')
 const webpack = require('webpack')
@@ -108,6 +109,7 @@ module.exports = {
     // hot: true,  // 生产环境不需要热更新
     open: true
   },
+  stats: 'errors-only',
   plugins: [
     /*new HtmlWebpackPlugin({
       filename: 'index.html',
@@ -135,6 +137,7 @@ module.exports = {
       assetNameRegExp: /\.css$/g,
       cssProcessor: require('cssnano')
     }),
+    new FriendlyErrorsWebpackPlugin()
     // new HtmlWebpackExternalsPlugin({
     //   externals: [
     //     {
@@ -152,7 +155,7 @@ module.exports = {
   ].concat(htmlWebpackPlugin),
   optimization: {
     splitChunks: {
-      minSize: 0, // 当文件大于30k时单独打包成common.js
+      minSize: 30000, // 当文件大于30k时单独打包成common.js
       cacheGroups: {
         commons: {
           name: "common",
@@ -167,5 +170,5 @@ module.exports = {
       }
     }
   },
-  devtool: 'cheap-module-source-map'
+  devtool: '#cheap-module-source-map'
 }

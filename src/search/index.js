@@ -6,6 +6,7 @@ import '../../common/index'
 import { funA } from './tree-shaking' // 引入但是没有用到，mode: 'production'会自动忽略到
 import browser from './assets/images/brower.jpg'
 import './index.less'
+import add from 'zdw-large-num-demo'
 
 class Index extends React.Component {
   constructor() {
@@ -28,6 +29,7 @@ class Index extends React.Component {
       {
         Text ? <Text /> : null
       }
+      { add('999', '1') }
       <p>Search Text</p>
       <img src={ browser } width="200" height="150" alt="browser" onClick={ this.loadComponent.bind(this.loadComponent) } />
     </div>
