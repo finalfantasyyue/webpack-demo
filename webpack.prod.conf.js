@@ -137,7 +137,16 @@ module.exports = {
       assetNameRegExp: /\.css$/g,
       cssProcessor: require('cssnano')
     }),
-    new FriendlyErrorsWebpackPlugin()
+    new FriendlyErrorsWebpackPlugin(),
+    // function() { // 捕获构建异常
+    //   this.hooks.done.tap('done', (stats) => {
+    //     console.log(process.argv)
+    //     if (stats.compilation.errors && stats.compilation.errors.length && process.argv.includes('--config')) {
+    //       console.log('build error')
+    //       process.exit(1) // 默认是2
+    //     }
+    //   })
+    // }
     // new HtmlWebpackExternalsPlugin({
     //   externals: [
     //     {
